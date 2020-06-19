@@ -25,4 +25,25 @@ public class ResumeService {
     public User getUserById(int id) {
         return userMap.get(id);
     }
+
+    public List<Education> getUserEducationsById(Integer id) {
+        return educationMap.get(id);
+    }
+
+    public User createUser(User user) {
+        int size = getUsers().size();
+        user.setId(size + 1);
+        return userMap.put(user.getId(), user);
+    }
+
+    public List<User> getUsers() {
+        return new ArrayList<>(userMap.values());
+    }
+
+    public void createEducationForUser(Integer id, Education education) {
+        List<Education> educations = educationMap.get(id);
+        int educationId = educations.size() + 1;
+        education.setId(educationId);
+        educations.add(education);
+    }
 }

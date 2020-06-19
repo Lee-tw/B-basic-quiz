@@ -4,7 +4,7 @@ import com.example.demo.model.User;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class ResumeInputDTO {
+public class UserInputDTO {
     private String name;
     private Long age;
     private String avatar;
