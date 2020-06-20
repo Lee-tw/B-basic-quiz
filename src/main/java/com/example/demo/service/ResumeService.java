@@ -11,8 +11,8 @@ import java.util.Map;
 
 @Service
 public class ResumeService {
-    private Map<Integer, User> userMap = new HashMap<>();
-    private Map<Integer, List<Education>> educationMap = new HashMap<>();
+    private final Map<Integer, User> userMap = new HashMap<>();
+    private final Map<Integer, List<Education>> educationMap = new HashMap<>();
 
     public ResumeService() {
         List<Education> educations = new ArrayList<>();
