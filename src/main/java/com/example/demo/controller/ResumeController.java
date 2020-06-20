@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.Exception.ResumeException;
 import com.example.demo.controller.dto.EducationInputDTO;
 import com.example.demo.controller.dto.UserInputDTO;
 import com.example.demo.model.Education;
@@ -7,10 +8,14 @@ import com.example.demo.model.User;
 import com.example.demo.service.ResumeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Digits;
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -21,16 +26,24 @@ public class ResumeController {
 
     @GetMapping("/{id}")
     public User getUserById(@Valid @PathVariable("id") Integer id) {
-        return resumeService.getUserById(id);
+        Optional<User> userById = resumeService.getUserById(id);
+        if (userById.isPresent())
+            return userById.get();
+        throw new ResumeException("Not Found", 404, "Cannot find user with id " + id);
     }
 
     @GetMapping("/{id}/educations")
-    public List<Education> getUserEducationsById(@Valid @PathVariable("id") Integer id) {
-        return resumeService.getUserEducationsById(id);
+    // @RequestParam上validate失败后抛出的异常是 ConstraintViolationException
+    public List<Education> getUserEducationsById(@PathVariable("id") Integer id) {
+        Optional<List<Education>> userEducationsById = resumeService.getUserEducationsById(id);
+        if (userEducationsById.isPresent())
+            return userEducationsById.get();
+        throw new ResumeException("Not Found", 404, "Cannot find user with id " + id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    // @RequestBody上validate失败后抛出的异常是 MethodArgumentNotValidException
     public Integer createUser(@Valid @RequestBody UserInputDTO userInputDTO) {
         User user = userInputDTO.toUser();
         User createdUser = resumeService.createUser(user);
@@ -41,6 +54,8 @@ public class ResumeController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createEducationsForUser(@Valid @PathVariable("id") Integer id, @Valid @RequestBody EducationInputDTO educationInputDTO) {
         Education education = educationInputDTO.toEducation();
-        resumeService.createEducationForUser(id, education);
+        boolean isSuccessful = resumeService.createEducationForUser(id, education);
+        if (!isSuccessful)
+            throw new ResumeException("Not Found", 404, "Cannot find user with id " + id);
     }
 }

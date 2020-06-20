@@ -4,18 +4,21 @@ import com.example.demo.annotation.ByteValidatorAnnotation;
 import com.example.demo.model.Education;
 import lombok.AllArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
 @AllArgsConstructor
 public class EducationInputDTO {
 
-    @Past
+    @NotNull(message = "year不能为空")
     private final Long year;
 
-    @ByteValidatorAnnotation(minValue = 1, maxValue = 256, message = "长度应该在 1 - 256 bytes之间")
+    @NotNull(message = "title不能为空")
+    @ByteValidatorAnnotation(minValue = 1, maxValue = 256, message = "title长度应该在 1 - 256 bytes之间")
     private final String title;
 
-    @ByteValidatorAnnotation(minValue = 1, maxValue = 4096, message = "长度应该在 1 - 4096 bytes之间")
+    @NotNull(message = "description不能为空")
+    @ByteValidatorAnnotation(minValue = 1, maxValue = 4096, message = "description长度应该在 1 - 4096 bytes之间")
     private final String description;
 
     public Education toEducation() {
