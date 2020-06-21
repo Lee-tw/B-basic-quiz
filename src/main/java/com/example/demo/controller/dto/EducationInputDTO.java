@@ -1,15 +1,20 @@
 package com.example.demo.controller.dto;
 
 import com.example.demo.annotation.ByteValidatorAnnotation;
+import com.example.demo.annotation.YearValidatorAnnotation;
 import com.example.demo.model.Education;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Positive;
 
 @AllArgsConstructor
 public class EducationInputDTO {
 
+    @YearValidatorAnnotation
     @NotNull(message = "year不能为空")
     private final Long year;
 
