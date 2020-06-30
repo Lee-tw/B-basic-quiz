@@ -32,6 +32,7 @@ public class ResumeService {
         int size = getUsers().size();
         user.setId(size + 1);
         userMap.put(user.getId(), user);
+        educationMap.put(user.getId(), new ArrayList<>());
         return user;
     }
 

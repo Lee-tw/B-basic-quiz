@@ -24,6 +24,7 @@ import java.util.Optional;
 public class ResumeController {
     private final ResumeService resumeService;
 
+    // 异常可以在Service中直接抛出，而不用在Controller中判断返回值
     @GetMapping("/{id}")
     public User getUserById(@Valid @PathVariable("id") Integer id) {
         Optional<User> userById = resumeService.getUserById(id);

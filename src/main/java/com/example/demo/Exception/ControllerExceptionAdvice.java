@@ -18,7 +18,7 @@ import java.util.Iterator;
 @RestControllerAdvice
 public class ControllerExceptionAdvice {
     @ExceptionHandler(ResumeException.class)
-    @ResponseBody
+    // @ResponseBody   表示该方法的返回结果直接写入 HTTP response body 中
     public ResponseEntity<ErrorResult> handleAccountException(ResumeException e) {
         ErrorResult errorResult = new ErrorResult(OffsetDateTime.now().toString(), e.getStatus(), e.getError(), e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResult);
@@ -29,7 +29,7 @@ public class ControllerExceptionAdvice {
     public ResponseEntity<ErrorResult> handleValidationException(MethodArgumentNotValidException e) {
         FieldError fieldError = e.getBindingResult().getFieldError();
         String message = fieldError.getDefaultMessage();
-        ErrorResult errorResult = new ErrorResult(OffsetDateTime.now().toString(), HttpStatus.BAD_REQUEST.value(), fieldError.getCode(), message);
+        ErrorResult errorResult = new ErrorResult(OffsetDateTime.now().toString(), HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), message);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResult);
     }
 }
