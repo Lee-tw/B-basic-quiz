@@ -6,12 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
 @Repository
+@Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private Long age;

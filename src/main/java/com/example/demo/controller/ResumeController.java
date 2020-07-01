@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.Exception.ResumeException;
 import com.example.demo.controller.dto.EducationInputDTO;
+import com.example.demo.controller.dto.EducationOutputDTO;
 import com.example.demo.controller.dto.UserInputDTO;
 import com.example.demo.model.Education;
 import com.example.demo.model.User;
@@ -35,11 +36,8 @@ public class ResumeController {
 
     @GetMapping("/{id}/educations")
     // @RequestParam上validate失败后抛出的异常是 ConstraintViolationException
-    public List<Education> getUserEducationsById(@PathVariable("id") Integer id) {
-        Optional<List<Education>> userEducationsById = resumeService.getUserEducationsById(id);
-        if (userEducationsById.isPresent())
-            return userEducationsById.get();
-        throw new ResumeException("Not Found", 404, "Cannot find user with id " + id);
+    public List<EducationOutputDTO> getUserEducationsById(@PathVariable("id") Integer id) {
+        return resumeService.getUserEducationsById(id);
     }
 
     @PostMapping
@@ -55,8 +53,6 @@ public class ResumeController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createEducationsForUser(@Valid @PathVariable("id") Integer id, @Valid @RequestBody EducationInputDTO educationInputDTO) {
         Education education = educationInputDTO.toEducation();
-        boolean isSuccessful = resumeService.createEducationForUser(id, education);
-        if (!isSuccessful)
-            throw new ResumeException("Not Found", 404, "Cannot find user with id " + id);
+        resumeService.createEducationForUser(id, education);
     }
 }
